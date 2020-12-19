@@ -54,5 +54,6 @@ $route['login']               	= 'auth/login';
 $route['register']               = 'user/register';
 $route['room/add']               = 'room/add';
 $route['room']               	='room/getAllRoom';
+$route['booking/add']            ='booking/add';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

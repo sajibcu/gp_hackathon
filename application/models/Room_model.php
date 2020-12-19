@@ -19,6 +19,14 @@ class Room_model extends CI_Model {
 					->get()
 					->row_array();
 	}
+	public function getByRoomNumber($room_number)
+	{
+		return $this->db->select("r.*")
+					->from($this->table." AS r")
+					->where("r.room_number",$room_number)
+					->get()
+					->row_array();
+	}
 	public function getAllRoom() {
 		return $this->db->select("r.*")
 					->from($this->table." AS r")

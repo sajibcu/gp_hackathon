@@ -21,7 +21,7 @@ class Room extends CI_Controller {
 	}
 	public function add()
 	{
-		$this->form_validation->set_rules('room_number', "Room Number",'required');
+		$this->form_validation->set_rules('room_number', "Room Number",'required|max_length[255]|callback_room_check');
 		$this->form_validation->set_rules('price', "Price",'required|numeric');
 		$this->form_validation->set_rules('max_persons', "Max persons",'required|numeric|max_length[32]');
 		$this->form_validation->set_rules('room_type', "room type",'required');
@@ -52,4 +52,15 @@ class Room extends CI_Controller {
 	public function getAllRoom() {
 		echo json_encode($this->room_model->getAllRoom());
 	}
+	public function room_check($room_numbr)
+    { 
+    	//dd($email)
+
+        if (!empty($this->room_model->getByRoomNumber($room_numbr))) {
+            $this->form_validation->set_message('room_check', 'The {field} field must contain a unique value.');
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
