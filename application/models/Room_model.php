@@ -10,6 +10,10 @@ class Room_model extends CI_Model {
 	{ 
 		return $this->db->insert($this->table,$data);
 	}
+	public function update($data = [])
+	{ 
+		return $this->db->update($this->table,$data,array('id'=>$data['id']));
+	}
 
 	public function getById($id)
 	{

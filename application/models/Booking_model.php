@@ -11,6 +11,11 @@ class Booking_model extends CI_Model {
 		return $this->db->insert($this->table,$data);
 	}
 
+	public function update($data = [])
+	{ 
+		return $this->db->update($this->table,$data,array('id'=>$data['id']));
+	}
+
 	public function getById($id)
 	{
 		return $this->db->select("r.*")
@@ -25,6 +30,16 @@ class Booking_model extends CI_Model {
 					->where("r.locked",0)
 					->get()
 					->result_array();
+	}
+
+	public function getBookingByUserId($userId) {
+
+		return $this->db->select("b.*")
+					->from($this->table." AS b")
+					->where("b.checkout IS NULL")
+					->get()
+					->result_array();
+
 	}
  
   

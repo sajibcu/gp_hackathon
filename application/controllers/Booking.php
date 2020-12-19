@@ -21,7 +21,7 @@ class Booking extends CI_Controller {
 	}
 	public function add()
 	{
-		$this->form_validation->set_rules('room_number', "Room Number",'required|callback_room_availability');
+		$this->form_validation->set_rules('room_number', "room_number",'required|callback_room_availability');
 		//$this->form_validation->set_rules('arrival', "checkout",'required');
 		//$this->form_validation->set_rules('checkout', "checkout",'required');
 		$this->form_validation->set_rules('customer_id', "Customer Id",'required');
@@ -43,6 +43,13 @@ class Booking extends CI_Controller {
            
            if($this->booking_model->create($postData)){
            	$insert_id = $this->db->insert_id();
+
+           	$roomData = array(
+           			'id' => $room['id'],
+           			'locked' => 1
+           		);
+           	$this->room_model->update($roomData);
+
            	echo json_encode($this->booking_model->getById($insert_id));
            }else {
            	echo "Please try again!!";
@@ -53,8 +60,8 @@ class Booking extends CI_Controller {
         } 
 	}
 
-	public function getAllRoom() {
-		echo json_encode($this->room_model->getAllRoom());
+	public function getBookingByUserId($userId) {
+		echo json_encode($this->booking_model->getBookingByUserId($userId));
 	}
 
 	public function room_availability($room_numbr)
@@ -63,10 +70,10 @@ class Booking extends CI_Controller {
     	$room = $this->room_model->getByRoomNumber($room_numbr);
 
         if (empty($room)) {
-            $this->form_validation->set_message('room_check', 'The {field} is not found.');
+            $this->form_validation->set_message('room_availability', 'The room is not found.');
             return false;
         }else if($room['locked']==1) {
-        	$this->form_validation->set_message('room_check', 'Room is already booked.');
+        	$this->form_validation->set_message('room_availability', 'The room is already booked.');
             return false;
         }else {
         	return true;
