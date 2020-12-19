@@ -524,5 +524,12 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
-$config['devlop_website'] = 'http://srs.tech';
-$config['devloper_email'] = 'help.srstech@gmail.com';
+
+$config['jwt_config'] = array(
+	'secretKey'=>"x5fdg%78%423j",
+	'tokenId'=>base64_encode("sdf^34jksd"),
+	'issuedAt'=>time(),
+	'notBefore'=>time(),
+	'expire'=>time()+36000,
+	'serverName'=>"localhost",
+);

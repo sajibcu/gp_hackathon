@@ -49,6 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author		EllisLab Dev Team
  * @link		https://codeigniter.com/user_guide/general/controllers.html
  */
+use \Firebase\JWT\JWT;
 class CI_Controller {
 
 	/**
@@ -99,5 +100,29 @@ class CI_Controller {
 	{
 		return self::$instance;
 	}
+
+	function isAuthonticated(){
+       // $ci = & get_instance();
+        $headers = $this->input->get_request_header('Authorization'); //get token from request header
+        // dd($headers);
+        $config = $this->config->item('jwt_config');
+
+        try {
+           $decoded = JWT::decode($headers, $config['secretKey'], array('HS512'));
+           $decoded_array = (array) $decoded;
+
+           //dd($decoded_array);
+           //$response = service('response');
+           $this->response->statusCode(200);
+           // return true;
+          // $ci->response->setStatusCode(Response::HTTP_OK);
+
+          // $ci->set_response($decoded, REST_Controller::HTTP_OK);
+        } catch (Exception $e) {
+            $invalid = ['status' => $e->getMessage()]; //Respon if credential invalid
+            $this->response($invalid, 401);
+             
+        }
+    }
 
 }
